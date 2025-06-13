@@ -1,0 +1,30 @@
+========================
+# Write Back Strategy :
+========================
+-> First writes data into cache.
+-> Then asynchronously writes data into DB.
+
+# Pros :
+---------
+-> Very good for read heavy applications as chances of cache-hit increases a lot.
+   There is no need to pre-heat the cache. It is used in combination with either
+   cache-aside or read-through strategy.
+-> Very good for write heavy applications as write latency decreases as compared to
+   write-through strategy.
+-> Write operation works even if DB IS down.
+
+# Cons :
+---------
+-> If a data is written into cache with TTL (say 3 hrs) and data is send to the 
+   queue. Now the DB went down for say 5 hrs. So, queue won't be able to write
+   the data into DB and also there will no data in cache after 3 hrs. So, there will
+   be a period when the data in not available in cache as well as in DB. Now, in that
+   period if some opeation takes place assuming that the data in available then that
+   operation will fail.
+   
+Note: If Kafka is used as message broker then we have two options :
+1. Connect kafka topic directly to the DB using Kafka-connect.
+2. Make a consumer which consumes the data from the topic and writes in DB.
+
+If DB write fails, the message goes to the dead-letter topic and is retried after 
+back-off time.

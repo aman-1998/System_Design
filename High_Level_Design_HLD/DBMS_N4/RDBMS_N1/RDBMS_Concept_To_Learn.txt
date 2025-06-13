@@ -1,0 +1,12 @@
+==========================================================
+In relational databases you must know following concepts:
+==========================================================
+1. Data Modeling
+2. ER Diagrams
+3. Relational Diagrams
+4. Normalization
+5. Denormalization
+6. Indexing (B-Trees & B+ Trees)
+7. Transaction
+8. SLQ queries
+

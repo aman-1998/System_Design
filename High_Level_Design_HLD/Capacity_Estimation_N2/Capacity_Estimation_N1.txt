@@ -1,0 +1,61 @@
+========================
+# Capacity Estimation :
+========================
+While doing capacity estimation our target is to find these 4 things:
+1. No. of servers (Traffic estimation)
+2. Storage capacity
+3. Cache capacity (RAM)
+4. Trade off (CAP)
+
+# Need:
+--------
+Without capacity estimation if you start building high level design then, interviewer
+may ask questions like 
+why have you used cache ? 
+How did you come to a conclusion that we need this database ?
+What should be the size of cache and how many severs will be present in a
+cache-cluster ?
+
+So, in order to avoid such questions we find capacity estimation. It helps us to decide
+which components to use while designing the system and to which extent. It helps us
+in regulating the cost of making required system.
+
+So, capacity estimation is helpful in understanding which components are required for 
+designing the system.
+
+
+# Chart to remember:
+ ------------------------------------------------------------
+|   Zeroes    |   Traffic (People/Units)   |   Storage       |
+|-------------|----------------------------|-----------------|
+| 3  (10^3)   | Thousand                   | KB  (Kilobyte)  |
+| 6  (10^6)   | Million                    | MB  (Megabyte)  |
+| 9  (10^9)   | Billion                    | GB  (Gigabyte)  |
+| 12 (10^12)  | Trillion                   | TB  (Terabyte)  |
+| 15 (10^15)  | Quadrillion                | PB  (Petabyte)  |
+| 18 (10^18)  | Quintillion                | EB  (Exabyte)   |
+| 21 (10^21)  | Sextillion                 | ZB  (Zettabyte) |
+| 24 (10^24)  | Septillion                 | YB  (Yottabyte) |
+-------------------------------------------------------------
+Char -> 2 bytes
+Long/Double -> 8 bytes
+Image -> 300 KB
+
+Formula: x million users * y Megabytes  =  xy Terabytes
+           (6 zeroes)        (6 zeroes)       (12 zeroes)
+
+
+# Pro Tips:
+------------
+Don't spend much time on capacity estimation because interviewer wants to see
+a scalable High Level Design. Capacity estimation is just to show your knowledge
+You always have to design a system for huge number of users.
+
+
+
+
+
+
+
+
+

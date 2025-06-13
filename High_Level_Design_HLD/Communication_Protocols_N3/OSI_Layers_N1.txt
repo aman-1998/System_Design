@@ -1,0 +1,128 @@
+# Communication:
+-----------------
+Communication is nothing but interaction between two systems to solve a common problem.
+
+The entire journey of a message travelling from source to destination is categorized 
+into 7 layers. This is also called OSI Model (Open Systems Interconnection) model
+OSI is a conceptual framework that standardizes the functions of a telecommunication 
+or computing system into seven distinct layers. Each layer has a specific role in 
+handling network communication.
+ ----------------------------------------------------------------------------------------------------------------------------------------------------------
+| Layer Number | Layer Name       | Function Summary                                                          | Example Protocols / Technologies           |
+|--------------|------------------|---------------------------------------------------------------------------|--------------------------------------------|
+| 7        	   | Application      | Provides network services to applications                                 | HTTP, FTP, SMTP, DNS, REST, SOAP           |
+| 6        	   | Presentation     | Translates data format, encryption, compression                           | SSL/TLS, JPEG, ASCII, encryption protocols |
+| 5        	   | Session          | Manages sessions, Authentication and Authorization                        | NetBIOS, PPTP, SAP, session checkpointing  |
+| 4        	   | Transport        | Provides reliable or unreliable data transfer                             | TCP (reliable), UDP (unreliable)           |
+| 3        	   | Network          | Handles routing and forwarding of data                                    | IP, ICMP, OSPF, BGP                        |
+| 2        	   | Data Link        | Transfers data between adjacent network nodes, error detection/correction | Ethernet, Wi-Fi (802.11), PPP              |
+| 1        	   | Physical         | Transmits raw bitstream over physical medium                              | Cables, switches, hubs, electrical signals |
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Physical Layer (Layer 1) :
+---------------------------
+Deals with the physical connection between devices.
+Transmits raw bits (0s and 1s) over a medium (cables, Wi-Fi, fiber optics).
+Defines voltage levels, pin layouts, cabling, and data rates.
+Examples: Ethernet, USB, Bluetooth, HDMI.
+
+Data Link Layer (Layer 2) :
+----------------------------
+Provides node-to-node communication (e.g., between two directly connected devices).
+Handles error detection and correction (CRC checks).
+Manages MAC addresses for hardware identification.
+Divides data into frames.
+Examples: Ethernet (IEEE 802.3), Wi-Fi (IEEE 802.11), PPP, switches.
+
+Network Layer (Layer 3) :
+--------------------------
+Responsible for logical addressing (IP addresses) and routing packets across networks.
+Determines the best path for data transfer (routing protocols like OSPF, BGP).
+Fragments large packets if needed.
+Examples: IP (IPv4, IPv6), ICMP, routers.
+
+Transport Layer (Layer 4) :
+----------------------------
+Ensures end-to-end communication with reliability (TCP) or speed (UDP).
+Segments data into smaller units.
+Manages flow control and error recovery (retransmission in TCP).
+Examples: TCP (reliable), UDP (unreliable), SCTP.
+
+Session Layer (Layer 5) :
+--------------------------
+Establishes, maintains, and terminates sessions between applications.
+Handles authentication, reconnection, and session checkpoints.
+Examples: NetBIOS, RPC, SIP.
+
+Presentation Layer (Layer 6)
+-----------------------------
+Translates data into a format the application can understand (encryption, compression, encoding).
+Converts between different formats (e.g., JSON, XML, ASCII, JPEG).
+Handles SSL/TLS encryption.
+
+Application Layer (Layer 7) :
+------------------------------
+The user interface for network services.
+Provides network services directly to applications (HTTP, FTP, SMTP).
+Examples: HTTP (web), SMTP (email), FTP (file transfer), DNS (domain names), SSH.
+
+
+Data's journey starts from Application layer and ends in Physical layer.
+
+
+OSI Model Layers with Real-World Analogies:
+--------------------------------------------
+7. Application Layer
+----------------------
+Analogy: You (the user) interacting with an app or website.
+This layer is like the receptionist or the user interface that you directly interact with.
+It understands your request — like “I want to browse a webpage” or “send an email.”
+Protocols: HTTP, FTP, SMTP, DNS, etc.
+
+6. Presentation Layer
+-----------------------
+Analogy: The translator or interpreter.
+Translates your request into a format the other side understands.
+Converts data formats (e.g., text encoding), encrypts or decrypts messages, compresses or decompresses data.
+Like when you speak English but the other side understands French, so this layer translates.
+
+5. Session Layer
+------------------
+Analogy: The meeting organizer or moderator.
+Sets up, manages, and tears down sessions (conversations) between computers.
+Keeps track of whose turn it is to speak, manages dialogue control.
+Imagine a conference call host who manages when each person talks and keeps the session active.
+
+4. Transport Layer
+-------------------
+Analogy: The reliable courier or delivery service.
+Breaks down large messages into smaller packets, ensures they arrive intact and in order.
+Manages retransmissions if packets are lost or corrupted.
+Like a courier who tracks packages, confirms delivery, and re-sends lost parcels.
+
+3. Network Layer
+-----------------
+Analogy: The GPS or postal routing office.
+Determines the best path for data to travel across multiple networks to reach the destination.
+Handles logical addressing (IP addresses).
+Like the post office routing your mail through cities and sorting centers until it reaches the recipient.
+
+2. Data Link Layer
+-------------------
+Analogy: The local mail carrier or building mailroom.
+Responsible for sending packets between neighboring devices on the same network.
+Handles physical addressing (MAC addresses), error detection, and framing.
+Like the mail carrier who delivers mail from the post office to your home or office.
+
+1. Physical Layer
+------------------
+Analogy: The physical roads, cables, and postal trucks.
+Transmits raw bits (0s and 1s) over physical media (cables, fiber optics, wireless signals).
+Defines electrical/optical/radio signals, voltage levels, connectors, etc.
+Like the roads and vehicles that physically carry the mail or packages.
+
+Summary with Analogy Flow
+You (Application) → Translator (Presentation) → Meeting Organizer (Session) → Courier (Transport) → GPS/Post Office (Network) → Local Mail Carrier (Data Link) → Roads & Trucks (Physical)
+
+
+Reference: https://www.youtube.com/watch?v=vv4y_uOneC0

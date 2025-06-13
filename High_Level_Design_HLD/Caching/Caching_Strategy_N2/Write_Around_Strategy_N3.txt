@@ -1,0 +1,19 @@
+==========================
+# Write Around Strategy :
+==========================
+-> Directly write data into DB
+-> It invalidates the data in the cache if found
+
+# Pros :
+---------
+-> Good approach for heavy read applications if used in combination with either
+   cache-aside or read-through strategy.
+-> Resolves inconsistency problem between cache and DB.
+
+
+# Cons :
+---------
+-> For new data read, there will always be cache-miss. To resolve this we can 
+   pre-heat the cache.
+-> If DB is down, write operations will fail.
+ 

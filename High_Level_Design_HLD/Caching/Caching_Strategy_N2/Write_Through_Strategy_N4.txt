@@ -1,0 +1,18 @@
+===========================
+# Write Through Strategy :
+===========================
+-> First writes data into cache.
+-> Then synchronously writes data into DB
+
+# Pros:
+--------
+-> Very good for read heavy applications as chances of cache-hit increases a lot.
+   There is no need to pre-heat the cache. It is used in combination with either
+   cache-aside or read-through strategy.
+-> Cache and DB always remains consistent.
+
+# Cons :
+---------
+-> Latency increases as 2-phase commit is required (first cache and then DB). If any
+   one fails entire transaction is rolled back.
+-> If DB is down, write operations will fail.

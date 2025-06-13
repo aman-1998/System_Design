@@ -1,0 +1,23 @@
+=========================
+# Cache Aside Strategy :
+=========================
+-> Application first checks the cache.
+-> If data is found in cache, it is called cache-hit and data is returned to the client.
+-> If data is not found in cache, it is called cache-miss. Server app fetches the data
+   from DB stores it in cache and then data is returned to the client.
+
+# Pros:
+--------
+-> Good approach for heavy read applications
+-> Even if cache is down, request will not fail, as data will be fetched from DB.
+-> Cache document datastructure can be different from the data present in DB.
+
+# Cons:
+--------
+-> For new data read, there will always be cache-miss. To resolve this we can 
+   pre-heat the cache
+-> If appropriate caching staretegy is not used during write operations, there is 
+   a chance of inconsistency between cache and DB. For example, if a write operations
+   updates or delete the data in DB but cache still hold the same data which is 
+   now stale. Reading stale data is called dirty-read.
+

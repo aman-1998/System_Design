@@ -1,0 +1,50 @@
+===========
+# Caching:
+===========
+
+Caching is a strategy where we store frequently used data in a fast access memory 
+like RAM rather than storing them in slow access memory like hard-disk.
+
+-> This makes the system fast.
+-> It helps in reducing the latency.
+-> It also helps achieving fault tolerance.
+
+There are different types of caching present at diffrent layers of system like:
+1. Client side caching (Browser caching for frequently used webpages)
+2. CDN 
+3. Caching in load-balancer
+4. Server-side caching (using redis)
+
+
+# Distributed Caching:
+-----------------------
+Distributed caching means there are multiple shards/nodes in a cluster each containg
+subset of entire data. Due to which horizontal scaling happens seamlessly. And in order 
+to increase avilability of cache-server and make them fault tolerant each shard can 
+have odd number of replicas. This combination of shards and their replicas is called
+a cluster. This is called distributed caching because data is distributed across shards.
+
+
+# Caching Strategy:
+---------------------
+Caching strategy refers to the ways in which we can implement caching in our system
+to make them fast and reduce the latency.
+
+1. Cach Aside strategy
+2. Read Through Strategy
+3. Write Around Strategy
+4. Write Through Strategy
+5. Write Back/Behind strategy
+
+# Cache Eviction Strategy:
+---------------------------
+When cache memory is full, the data in cache has to be deleted in such a way that the
+future requests should still have the high probablity of cache-hit.
+
+1. Least Recently Used (LRU)
+2. Most Recently Used (MRU)
+3. Least Frequently Used (LFU)
+4. First In First Out (FIFO)
+5. Last In First Out (LIFO)
+6. Random Removal (RR)
+7. Time To Leave (TTL)

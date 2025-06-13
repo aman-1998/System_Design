@@ -1,0 +1,388 @@
+# TCP/UDP :
+--------------------
+
+Transport layer deal with end to end communication. There are two types of protocols 
+used in transport layer.
+1. TCP
+2. UDP
+
+
+TCP (Transmission Control Protocol
+-----------------------------------
+Key Features:
+--------------
+Connection-oriented: a handshake is done before sending data (SYN, SYN-ACK, ACK)
+Reliable: lost or corrupted packets are retransmitted
+Ordered: packets are reassembled in correct order
+Flow Control & Congestion Control: helps avoid overwhelming the receiver
+
+Analogy:
+---------
+Like sending a registered letter with delivery confirmation — slower, but guaranteed.
+
+Common Use Cases:
+-------------------
+Web browsing (HTTP/HTTPS)
+Email (SMTP, IMAP, POP3)
+File Transfer (FTP, SFTP)
+
+UDP (User Datagram Protocol)
+------------------------------
+Key Features:
+--------------
+Connectionless: no handshake, fire-and-forget
+Unreliable: no guarantee of delivery or order
+Low latency: faster because of minimal overhead
+Broadcast & multicast: better for sending data to multiple receivers
+
+Analogy:
+---------
+Like dropping postcards in the mail — fast, but no guarantee they arrive or arrive in order.
+
+Common Use Cases:
+------------------
+Video calls, voice calls (VoIP)
+Online gaming
+Streaming (e.g., YouTube, Netflix)
+DNS lookups
+IoT telemetry
+
+
+Difference (TCP vs UDP):
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Feature                | TCP (Transmission Control Protocol)                                               | UDP (User Datagram Protocol)                      |
+| ---------------------- | --------------------------------------------------------------------------------- | ------------------------------------------------- |
+| **Connection**         | **Connection-oriented** (requires handshake)                                      | **Connectionless**                                |
+| **Reliability**        | Reliable – guarantees delivery, order, and checks for errors                      | Unreliable – no guarantee of delivery or order    |
+| **Speed**              | Slower due to overhead (acknowledgments, retransmissions)                         | Faster due to minimal overhead                    |
+| **Data Flow**          | Stream-based – data is read as a continuous stream                                | Message-based – data sent in discrete packets     |
+| **Overhead**           | High                                                                              | Low                                               |
+| **Use Cases**          | Web browsing (HTTP/HTTPS), Email (SMTP), File transfers (FTP), Remote login (SSH) | Video streaming, Online gaming, VoIP, DNS lookups |
+| **Error Checking**     | Yes – includes checksum, ACK, retransmission                                      | Yes – checksum only, no retransmission            |
+| **Ordering**           | Guarantees packet order                                                           | No guarantee of order                             |
+| **Congestion Control** | Yes (e.g., slow start, congestion avoidance)                                      | No                                                |
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Analogy:
+---------
+TCP = Phone call: You dial, wait for connection, then talk. Both parties ensure message delivery.
+UDP = Postcard: You write and drop it in the mailbox. No guarantee it arrives or in what order.
+
+Summary:
+---------
+Use TCP when reliability and order matter.
+Use UDP when speed is more important than reliability.
+
+
+What "Connectionless" Means in UDP
+------------------------------------
+In TCP, there's a 3-way handshake (SYN, SYN-ACK, ACK) before any data is transferred.
+In UDP, the sender just fires off a packet to the receiver — no handshake, no setup.
+
+
+TCP Handshake:
+---------------
+The TCP handshake, often called the three-way handshake, is the fundamental 
+process used to establish a reliable TCP connection between a client and a server. 
+Here’s how it works step-by-step:
+
+1. SYN – Client → Server
+Client sends a TCP segment with the SYN flag set (synchronize) and an initial sequence 
+number x, signalling a request to open a connection.
+Client → Server: [SYN, seq = x]
+
+2. SYN-ACK – Server → Client
+Server responds with a TCP segment having both SYN and ACK flags set. It acknowledges 
+the client's sequence number (x+1) and provides its own sequence number y.
+Server → Client: [SYN+ACK, seq = y, ack = x+1]
+
+3. ACK – Client → Server
+Client sends an ACK packet acknowledging the server's sequence (y+1). At this point, both 
+sides have received and confirmed each other’s sequence numbers.
+Client → Server: [ACK, seq = x+1, ack = y+1]
+
+
+Once this handshake completes, a TCP connection is established, and reliable, ordered 
+data transfer can begin.
+
+
+Visual Summary:
+----------------
+Client                          Server
+  |                               |
+  |        SYN, seq=x             |
+  |------------------------------>|
+  |                               |
+  |                               |
+  |<------------------------------|
+  |    SYN+ACK, seq=y, ack=x+1    |
+  |                               |
+  |                               |
+  |       ACK, ack=y+1            |
+  |------------------------------>|
+  |                               |
+  |                               |  
+  
+Established —– Reliable TCP connection ready
+
+
+
+How UDP Sends Data from Client to Server
+------------------------------------------
+
+Step-by-Step:
+--------------
+1. Client knows the server's IP and port (e.g., 192.168.1.100:5000)
+2. Client builds a UDP packet with:
+   -> Destination IP and port
+   -> Message (payload)
+3. Client sends the packet using its local socket
+4. Server listens on a UDP port
+   -> It receives packets from any client that sends to it
+5. Server reads the message and gets the sender's address (IP and port) from the packet metadata
+6. If needed, the server can reply directly to the client using that info
+
+----------------------------------------
+UDP Communication – Real Example (Java)
+Server (listens on port 5000)
+----------------------------------------
+import java.net.*;
+
+public class UdpServer {
+    public static void main(String[] args) throws Exception {
+        DatagramSocket socket = new DatagramSocket(5000);
+        byte[] buffer = new byte[1024];
+
+        System.out.println("UDP server listening on port 5000...");
+
+        while (true) {
+            DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+            socket.receive(packet); // waits for data
+
+            String message = new String(packet.getData(), 0, packet.getLength());
+            System.out.println("Received from client: " + message);
+
+            // Optional: send response
+            String response = "Hello from server";
+            byte[] responseBytes = response.getBytes();
+            InetAddress clientAddress = packet.getAddress();
+            int clientPort = packet.getPort();
+            socket.send(new DatagramPacket(responseBytes, responseBytes.length, clientAddress, clientPort));
+        }
+    }
+}
+
+-----------------------------
+Client (Sends to 5000 port)
+-----------------------------
+import java.net.*;
+
+public class UdpClient {
+    public static void main(String[] args) throws Exception {
+        DatagramSocket socket = new DatagramSocket();
+
+        String message = "Hello from client";
+        byte[] buffer = message.getBytes();
+
+        InetAddress serverAddress = InetAddress.getByName("localhost");
+        int serverPort = 5000;
+
+        DatagramPacket packet = new DatagramPacket(buffer, buffer.length, serverAddress, serverPort);
+        socket.send(packet);  // Send without any connection!
+
+        // Optional: receive response
+        byte[] responseBuffer = new byte[1024];
+        DatagramPacket responsePacket = new DatagramPacket(responseBuffer, responseBuffer.length);
+        socket.receive(responsePacket);
+        String response = new String(responsePacket.getData(), 0, responsePacket.getLength());
+        System.out.println("Response from server: " + response);
+    }
+}
+
+Summary:
+-----------------------------------------------------------------
+| Concept           | UDP Behavior                               |
+| ----------------- | -------------------------------------------|
+| Connection setup  | None (no handshake)                        |
+| Addressing        | Packet includes destination IP and port 	 |
+| Server behavior   | Listens on a port, accepts any sender   	 |
+| Reliability/order | Not guaranteed                          	 |
+| Speed             | Very fast (no delay for setup)          	 |
+-----------------------------------------------------------------
+
+
+-------------------------------------------------------
+TCP Communication – Real Example (Java)
+Server (listens on port 5000 and accepts connections)
+-------------------------------------------------------
+import java.io.*;
+import java.net.*;
+
+public class TcpServer {
+    public static void main(String[] args) throws IOException {
+        int port = 5000;
+        ServerSocket serverSocket = new ServerSocket(port);
+        System.out.println("TCP Server listening on port " + port);
+
+        // Accept a client connection
+        Socket clientSocket = serverSocket.accept();
+        System.out.println("Client connected: " + clientSocket.getInetAddress());
+
+        // Setup input and output streams
+        BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+
+        // Read message from client
+        String message = in.readLine();
+        System.out.println("Received from client: " + message);
+
+        // Send response back to client
+        out.println("Hello from TCP Server!");
+
+        // Close resources
+        in.close();
+        out.close();
+        clientSocket.close();
+        serverSocket.close();
+    }
+}
+
+
+-----------------------------
+Client (Sends to 5000 port)
+-----------------------------
+import java.io.*;
+import java.net.*;
+
+public class TcpClient {
+    public static void main(String[] args) throws IOException {
+        String hostname = "localhost";
+        int port = 5000;
+
+        // Connect to server
+        Socket socket = new Socket(hostname, port);
+        System.out.println("Connected to TCP server at " + hostname + ":" + port);
+
+        // Setup input and output streams
+        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+        // Send message to server
+        out.println("Hello from TCP Client!");
+
+        // Receive response from server
+        String response = in.readLine();
+        System.out.println("Response from server: " + response);
+
+        // Close resources
+        out.close();
+        in.close();
+        socket.close();
+    }
+}
+
+
+Summary:
+---------
+->Server opens a ServerSocket on port 5000 and waits for client connections.
+->When a client connects, the server accepts it, creating a Socket for communication.
+->Both sides use streams (InputStream & OutputStream) wrapped with readers/writers to send and receive text lines.
+->Messages are sent with println() and read with readLine().
+->After exchange, both sides close connections gracefully.
+
+
+Run order:
+-----------
+->Start TcpServer (it waits for connection).
+->Run TcpClient (it connects and sends a message).
+->Observe console logs for both.
+
+
+Note: In TCP, data will be received in order.
+In TCP, if a packet is lost:
+-> TCP detects the loss (via missing acknowledgments or timeouts).
+-> The sender retransmits the lost packet.
+-> TCP ensures reliable delivery — no data is lost.
+
+TCP guarantees in-order delivery to the receiving application.
+
+So even if packet #3 is lost:
+TCP waits to retransmit packet #3.
+Even if packet #4 and #5 arrive early, the receiving application won’t see them until #3 is received.
+TCP buffers the out-of-order packets internally, and delivers them in the correct order to the application.
+
+Example:
+Let’s say these 4 TCP packets are sent in order:
+1 → 2 → 3 → 4
+
+If 3 is lost:
+
+1 and 2 are received.
+4 might arrive early, but it will be held in buffer.
+3 is retransmitted and received.
+Only then does TCP deliver packets 3 and 4 together to the application.
+
+
+How TCP closes connection:
+---------------------------
+TCP closes connection via 4-way handshake
+Visual Summary:
+----------------
+Client                          Server
+  |                               |
+  |        FIN                    |
+  |------------------------------>|
+  |                               |
+  |             ACK               |
+  |<------------------------------|
+  |                               |
+  |                               |
+  |                               |
+  |             FIN               |
+  |<------------------------------|
+  |                               |
+  |           ACK                 | 
+  |------------------------------>|
+  |                               |
+  |                               |
+
+
+Summary TCP flow:
+------------------
+1. TCP flow starts with a 3-way handshake (SYN, SYN-ACK, ACK)
+2. Data flows from sender to receiver. Data is divided into segments.
+3. After recieving each segment server sends acknowledgement.
+4. If for any segment acknowledgement misses then that is considered lost
+   and sender retransmits the segment.
+5. At the receiver all segments are consolidated to form actual message.
+6. Connection remains open until one side initiates a four-way FIN-based closure.
+
+
+# TCP/IP Proticol:
+-------------------
+OSI model is theoritical and not practical. In real life, TCP/IP model is applicable.
+
+1. Application (HTTP, FTP, SMTP, Websockets) -> Application message
+2. Transport (TCP, UDP) -> TCP Segment or UDP Datagram
+3. Network (IP. ICMP, ARP) -> IP Packet
+4. Data Link Layer DLL (Ethernet) -> Ethernet Frame
+5. Physical Layer (Ethernet) -> Signal
+
+Link (Must see): https://www.youtube.com/watch?v=2QGgEk20RXM
+Link (Must see IPV4 vs IPV6): https://www.youtube.com/watch?v=8npT9AALbrI
+Link (Must see DHCP): https://www.youtube.com/watch?v=4pkDL1pgCgQ
+
+
+Note:
+======
+Web-Browser provides the functionality of Application Layer, Presentation Layer
+and Session Layer.
+
+There are two types of protocol at Application layer:
+1. Client-Server protocol
+2. Peer to Peer protocol
+
+Client-Server protocol : HTTP, FTP, SMTP, Websockets
+Peer to peer protocol: WebRTC
+
+

@@ -1,0 +1,216 @@
+# Websocket Protocol:
+----------------------
+WebSocket is a communication protocol that provides full-duplex (two-way), persistent 
+communication between a client (usually a web browser) and a server over a single TCP 
+connection.
+
+Features:
+ --------------------------------------------------------------------------------------------------------------------------------
+| Feature                | Description                                                                                           |
+|------------------------|-------------------------------------------------------------------------------------------------------|
+| Full-duplex            | Both client and server can send messages independently at any time.                                   |
+| Single TCP connection  | After an initial handshake over HTTP(S), it upgrades to WebSocket and reuses the same TCP connection. |
+| Low latency            | Eliminates the need to repeatedly open/close HTTP connections.                                        |
+| Persistent             | Connection remains open, making it ideal for real-time applications.                                  |
+| Stateful               | Server remembers the client and maintains context (e.g., session ID, login state, etc.) in memory     |
+ --------------------------------------------------------------------------------------------------------------------------------
+
+
+How WebSocket Works:
+---------------------
+Handshake:
+-> Starts as a normal HTTP request with "Upgrade: websocket" header.
+-> Server replies with "101 Switching Protocols". Server replies with 101 status code 
+   only when it supports WebSocket.
+-> Connection is upgraded to persistent stateful protocol i.e., WebSocket.
+
+Communication:
+Both sides can now send/receive messages continuously over the open socket.
+
+
+Use Cases:
+-----------
+Chat applications
+Online multiplayer games
+Stock tickers
+Collaborative editing tools
+Live sports scores
+
+
+Stateless: The server does not remember anything about the client between requests.
+Stateful: The server remembers the client and keeps the connection and context alive.
+
+
+HTTP — Persistent but Stateless
+---------------------------------
+In HTTP/1.1, Connection: keep-alive allows reusing the same TCP connection for 
+multiple requests.
+
+However, each request is still independent of the previous one.
+
+The server does not retain any memory of previous interactions.
+
+The client must send all necessary information (headers, cookies, tokens) with 
+every request.
+
+
+WebSocket — Persistent and Stateful
+-------------------------------------
+WebSocket upgrades the HTTP connection to a stateful protocol.
+
+After the handshake, the server remembers the client and maintains context (e.g., session ID, login state, etc.) in memory.
+
+No need to re-authenticate or re-send metadata repeatedly.
+
+For example in a multi-player game, when a command to move-left is sent, the server 
+already knows which user sent it and their state in the game — without needing extra 
+headers or tokens.
+
+So, in short:
+HTTP/1.1 keeps the connection alive, but not the session state.
+WebSocket keeps both the connection and session context alive.
+
+
+# STOMP (Simple(or Streaming) Text Oriented Mesaging Protocol) :
+-----------------------------------------------------------------
+It is a text-based messaging protocol, just like HTTP is text-based for web communication.
+
+WebSocket is low-level — it only sends and receives raw data (binary or text), but has 
+no built-in message format, routing, or metadata structure.
+
+STOMP adds a structured protocol on top of WebSocket for messaging — kind of like how 
+HTTP gives structure to TCP.
+
+Raw WebSocket (Without STOMP):
+-------------------------------
+Pros:
+------
+Lightweight (no extra protocol overhead)
+Full control over the message format and routing
+Good for custom protocols (like in games or low-latency systems)
+
+Cons:
+------
+You must manually implement:
+-----------------------------
+Message structure (e.g., JSON format, actions, types)
+Routing (who receives what)
+Pub-sub topics
+Authentication per message
+acks/retries/delivery guarantees
+
+Example:
+// You manually define the format
+{
+  "type": "chat",
+  "room": "room1",
+  "sender": "Anurag",
+  "message": "Hi!"
+}
+You write custom logic on the server to parse, route, and manage state.
+
+
+
+WebSocket + STOMP :
+--------------------
+Pros:
+------
+Standard messaging protocol: like HTTP but for messaging
+Built-in topics, queues, subscriptions
+Easily integrates with Spring Boot, RabbitMQ, ActiveMQ, etc.
+Built-in ACK, headers, message IDs
+Easy to use Pub/Sub model
+
+No need to manually parse or route messages
+
+Cons:
+------
+Slightly more overhead (due to extra protocol structure)
+Not as flexible for custom binary formats or ultra-low-latency apps
+
+
+Example (STOMP):
+SEND
+destination:/app/chat
+content-type:application/json
+
+{"user":"anurag","message":"Hi"}
+
+Server routes it automatically based on /app/chat or broadcasts to /topic/messages.
+
+
+Difference between WebSocket and (WebSocket + STOMP):
+ ----------------------------------------------------------------------------
+| Feature              | WebSocket Only   | WebSocket + STOMP                |
+| ---------------------|------------------|----------------------------------|
+| Message Format       | Custom (manual)  | STOMP-defined (standard)         |
+| Routing              | Manual logic     | Built-in via `/topic`, `/queue`  |
+| Pub/Sub Support      | Manual           | Built-in                         |
+| Message Headers      | Manual           | Built-in                         |
+| Interop with brokers | Manual / Limited | Native support                   |
+| Acknowledgment (ACK) | Manual           | Built-in                         |
+| Ideal Use Case       | Games, IoT       | Chats, notifications, dashboards |
+| Integration          | Pure WS server   | Spring, RabbitMQ, ActiveMQ       |
+ ----------------------------------------------------------------------------
+
+
+How webSockets are used in real-life:
+--------------------------------------
+We have to applications App-A and App-B
+If App-A wants to communicate with App-B using websocket then they can't do it
+directly. We have to create a Websocket server application (say, App-W)
+This App-W exposes websocket connection url and topics. App-A and App-B connects
+to this Websocket url and subscribe to the exposed topic.
+
+Now the websocket connection is established between App-A and App-B and they can
+exchange messges in real-time.
+
+
+[App‑A]        [App‑B]
+   \             /
+    \           /
+     \         /
+   [ App‑W (WebSocket/STOMP Broker) ws://localhost:8080/chatws]
+   [Exposes topic like /topic/public , /topic/score , etc ]
+   [ subscribe/publish on topic(s)  ]
+   
+   
+So, here App-A and App-B connects to url -> ws://localhost:8080/chatws
+App-A and App-B subscribes to /topic/public
+Now, any message sent to /topic/public will be received by every client that
+subscribes to that topic.
+   
+In real-life, WebSocket Servers are often load-balanced.
+
+Example:
+---------
+1. We write msg in the form
+2. Frontend (JS) takes that msg, connect to Websocket server using stompclient and 
+   sends the msg to the backend using connected stompclient (Eg. /chat.send) 
+3. At backend in the controller is mapped to the url /chat.send . The msg received by the
+   frontend is now sent to the topic (/tpoic/public)
+4. At frontend stompclient listens to the topic (/tpoic/public) and receive the msg. 
+   It then displays it in UI and send teh msg back to the backend to /chat.save
+5. At backend, in the controller is mapped to the url /chat.save . The msg is now saved in DB
+
+
+# WebSocket vs Kafka
+----------------------
+In kafka, messages can be accumulated and consumers can process the message
+at their own speed. Even if consumer is down, it can consume when it will be up.
+Producer produces the message to the topic and consumer consumes the message.
+There is guranteed delivery here.
+
+
+But WebSocket is full-duplex persistent connection where message sent by client1 is 
+received by client2 in real-time. If client2 is not available then msg will be lost.
+After getting first msg if client2 is processing that message and meanwhile another
+msg comes then browser keeps those messages in internal queue upto a very short limited
+memory. After tht msg will be lost.
+
+So, Websocket should never be used for msg processing. It is just for real-time
+exchange of display purpose messages like live-score, leaderboard, chat-app, 
+Stock tickers, etc.
+
+
+

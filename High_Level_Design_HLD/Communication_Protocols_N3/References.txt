@@ -1,0 +1,15 @@
+===============
+# References :
+===============
+Link: https://www.youtube.com/watch?v=JwTiZ9ENquI
+Link (Real-time-notification using springBoot): https://www.youtube.com/watch?v=sqYqyr6EpAU
+Link (Simple global chat using Spring Boot): https://www.youtube.com/watch?v=4Hyv4M1kFeM
+Link (global chat using Spring Boot): https://www.youtube.com/watch?v=TywlS9iAZCM
+Link (One to One chat using Spring Boot): https://www.youtube.com/watch?v=7T-HnTE6v64
+Link: https://www.youtube.com/watch?v=2QGgEk20RXM&t=414s
+Link: https://www.youtube.com/watch?v=uwoD5YsGACg
+Link (DNS): https://www.youtube.com/watch?v=g6R9gRWIIK8
+
+
+
+

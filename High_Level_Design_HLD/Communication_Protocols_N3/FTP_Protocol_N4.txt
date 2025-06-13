@@ -1,0 +1,77 @@
+# FTP (File Transfer Protocol):
+--------------------------------
+
+FTP (File Transfer Protocol) is a standard network protocol used to transfer 
+files between a client and a server over a TCP/IP network (like the Internet).
+
+It allows users to upload, download, delete, rename, move, or copy files on a 
+remote server.
+
+FTP works over TCP.
+
+FTP typically uses two separate connections:
+-> Control Connection: One for control commands (like login, change directory).
+-> Data Connection: One for data transfer (actual file content).
+
+For example: 
+1. In windows winSCP is used to connect to remote server. And file transfers
+   take place between local and remote server.
+2. Web Hosting : Web developers often use FTP to upload website files 
+   (HTML, CSS, images, scripts) from their local computer to a web server. 
+   Many web hosting providers support FTP access so you can manage your website 
+   content easily.
+
+
+1. Control Connection :
+------------------------
+This connection is used for sending commands and receiving responses between the 
+client and server.
+
+Example: ls, pwd, cd, chmod, etc
+
+Note: It stays open for the entire FTP session until the client logs out
+
+Data flow:
+Commands flow from client to server, and responses flow back from server to client 
+on this connection.
+
+
+2. Data Connection :
+---------------------
+This connection is used for transferring the actual file data.
+
+Example: File contents when uploading or downloading a file.
+
+Note: This connection is opened and closed for each data transfer
+
+Data flow:
+Data can flow from client to server ot viceversa.
+
+
+Why Two Connections?
+---------------------
+-> Having separate control and data connections allows the client and server to 
+   send commands and transfer data independently and simultaneously.
+-> This separation is useful because control commands (like changing directories) do 
+   not block or interfere with data transfer.
+   
+   
+There are various secured versions of FTP:
+ --------------------------------------------------------------------
+| Protocol | Description                  | Security                 |
+| -------- | ---------------------------- | ------------------------ |
+| FTP      | Basic file transfer protocol | No encryption (insecure) |
+| SFTP     | File transfer over SSH       | Encrypted (secure)       |
+| FTPS     | FTP over SSL/TLS             | Encrypted (secure)       |
+| SCP      | Secure copy over SSH         | Encrypted (secure)       |
+ --------------------------------------------------------------------
+ 
+# FTPS Protocol:
+------------------
+Just like HTTPS = HTTP + TLS handshake
+
+Similarly, FTPS = FTP + TLS handshake.
+
+TLS handshake concept is same.
+ 
+

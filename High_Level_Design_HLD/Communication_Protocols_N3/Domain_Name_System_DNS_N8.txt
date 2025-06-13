@@ -1,0 +1,107 @@
+==========================
+DNS (Domain Name System):
+==========================
+A DNS resolver is the client-side component that translates human-friendly domain 
+names (like www.example.com) into the numeric IP addresses computers use to route traffic.
+It does this by querying the DNS system. 
+Here's how it works:
+
+What a DNS Resolver Does ?
+---------------------------
+1. Accepts your DNS request
+----------------------------
+When you enter a URL in your browser, your computer forwards that request to the resolver.
+
+2. Looks in its cache
+----------------------
+If the resolver has recently looked up that domain, it returns the cached IP address 
+(fast response, avoids extra network traffic).
+
+3. Recurses through the DNS hierarchy
+--------------------------------------
+If it doesn’t have the answer cached, the resolver queries:
+Root servers → TLD servers (e.g., .com) → Authoritative servers for the domain.
+
+4. Returns the final IP
+------------------------
+After collecting the address, it sends it back to your computer, which can then 
+connect to the web server.
+
+
+**Root Server
+------------
+Holds the root zone: a list of every Top-Level Domain (TLD) (e.g., .com, .org, .in) and 
+the IP addresses of their official TLD name servers 
+
+When a resolver doesn’t know where to find .com, it asks a root server.
+
+There are 13 named root servers (A–M) with many instances via Anycast, providing global redundancy 
+
+
+**TLD Server
+--------------
+Holds records only for a specific TLD (e.g., .com).
+
+Knows which authoritative servers are responsible for each domain under it (like google.com) 
+
+
+**Authoritative Server
+-----------------------
+Responsible for a specific domain (e.g., google.com).
+
+Contains DNS records such as:
+
+A / AAAA (IPv4/IPv6 addresses)
+
+CNAME redirects
+
+MX, TXT, etc.
+
+When asked for www.google.com, it returns the actual IP address 
+
+
+# What happens once your browser has IP address of www.google.com ?
+--------------------------------------------------------------------
+**Step-by-Step: From IP to Web Server:
+---------------------------------------
+1. Open a TCP Connection
+-------------------------
+Your browser initiates a TCP handshake (SYN → SYN-ACK → ACK) to the IP on port 80 (HTTP) 
+or 443 (HTTPS)
+
+2. TLS Handshake (If HTTPS)
+----------------------------
+If you're using HTTPS, the browser then performs a TLS handshake over that TCP 
+connection to establish an encrypted channel—exchanging certificates, keys, and 
+negotiating encryption.
+
+3. Send the HTTP Request
+-------------------------
+Once the secure connection is in place, the browser sends an HTTP GET (or POST) request:
+GET /path/resource HTTP/1.1
+Host: www.example.com
+[other headers...]
+These headers ensure the right virtual host and resources are accessed
+
+4. Web Server Processes the Request
+------------------------------------
+The web server software (e.g., Apache, Nginx, Tomcat) receives it and:
+-> Serves static files
+-> Passes dynamic requests to application logic via CGI, Servlet, Node.js, etc.
+
+5. Server Sends Back an HTTP Response
+---------------------------------------
+The server returns a response, something like:
+HTTP/1.1 200 OK
+Content-Type: text/html
+[body with HTML content]
+
+6. Browser Renders the Page
+-----------------------------
+Your browser receives the response and begins rendering, possibly loading additional 
+assets (CSS, JS, images), repeating DNS or HTTP steps if needed.
+
+
+Extra Info:
+------------
+IP's are cached at browser and at ISP.

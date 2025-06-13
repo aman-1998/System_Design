@@ -1,0 +1,25 @@
+==========================
+# Read Through Strategy :
+==========================
+-> Application first checks the cache.
+-> If data is found in cache, it is called cache-hit and data is returned to the client.
+-> If data is not found in cache, it is called cache-miss. Cache library itself fetch
+   the data from DB, store it back to Cache and data is returned to the application.
+   
+# Pros:
+--------
+-> Good approach for heavy read applications
+-> Logic of fetching data from DB and updating cache s separated from DB.
+
+# Cons :
+---------
+-> For new data read, there will always be cache-miss. To resolve this we can 
+   pre-heat the cache.
+-> Cache document datastructure should be same as data present in DB.
+-> If appropriate caching staretegy is not used during write operations, there is 
+   a chance of inconsistency between cache and DB. For example, if a write operations
+   updates or delete the data in DB but cache still hold the same data then which is 
+   now stale. Reading stale data is called dirty-read.
+
+
+

@@ -1,0 +1,79 @@
+# SMTP Protocol :
+------------------
+SMTP stands for Simple Mail Transfer Protocol.
+
+It is the standard protocol used to send emails over the Internet.
+
+SMTP is responsible for sending, routing, and delivering email messages from a 
+sender’s email client to the recipient’s email server.
+
+How SMTP works:
+----------------
+When you click Send in your email client (like Outlook, Gmail, Thunderbird), 
+the email client connects to an SMTP server.
+
+The SMTP server takes your email and routes it across the internet to the 
+recipient’s mail server.
+
+The recipient’s mail server uses other protocols (like POP3 or IMAP) to 
+let the recipient retrieve their email.
+
+
+Key points:
+------------
+-> SMTP works on TCP
+-> SMTP works with TLS to secure the connection and email delivery.
+-> SMTP is only for sending mail — it doesn’t handle receiving or reading emails.
+-> SMTP servers communicate with each other to transfer email messages between domains.
+
+
+Note: Just like HTTPS, in SMTP also TLS handshake takes place before sendig mail.
+
+
+Example:
+---------
+When you send an email to friend@example.com, your mail client uses SMTP to 
+send it to your outgoing mail server.
+
+Your SMTP server then finds the recipient’s mail server (through DNS MX records) 
+and forwards the email.
+
+The recipient’s server stores it until they retrieve it with IMAP or POP3.
+
+
+# IMAP Protocol:
+-----------------
+-> Your email client talks to the mail server to list, read, and organize emails.
+-> Emails stay on the server.
+-> When you read or delete an email, the change is reflected on the server and seen on all your devices.
+
+# POP3 Protocol:
+-----------------
+-> Your email client downloads emails from the server to your device.
+-> By default, emails are deleted from the server after download (can be configured to leave copies).
+-> Email stays local to that device and changes aren’t synced back.
+
+Usage:
+ ---------------------------------------------------------------------------------
+| Protocol | Best For                                                             |
+| -------- | -------------------------------------------------------------------- |
+| **IMAP** | Accessing email from multiple devices and keeping everything in sync |
+| **POP3** | Downloading emails to a single device and managing them locally      |
+ ---------------------------------------------------------------------------------
+ 
+ 
+Difference IMAP vs POP3 :
+ --------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Feature                     | IMAP (Internet Message Access Protocol)                                       | POP3 (Post Office Protocol v3)                       |
+| --------------------------- | ----------------------------------------------------------------------------- | ---------------------------------------------------- |
+| **Purpose**                 | Manage and sync emails directly on server                                     | Download emails from server to local device          |
+| **Email storage**           | Emails stay on the mail server                                                | Emails are downloaded & usually deleted from server  |
+| **Multiple device support** | Excellent (syncs emails, folders, read/unread status across devices)          | Poor (emails downloaded on one device only, no sync) |
+| **Access offline**          | Limited offline access (emails remain on server)                              | Full offline access (emails are local)               |
+| **Folder support**          | Supports multiple folders (Inbox, Sent, Drafts, etc.)                         | Usually only Inbox is supported                      |
+| **Email status sync**       | Syncs read/unread, flagged status across devices                              | No status sync; downloaded emails lose server flags  |
+| **Use case**                | Modern usage for accessing email from multiple devices (mobile, desktop, web) | Simple, single-device usage or low storage needs     |
+ --------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 
+
+

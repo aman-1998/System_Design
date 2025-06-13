@@ -1,0 +1,49 @@
+# Vertical Scaling (Scaling Up)
+=================================
+Upgrading the hardware resources of a single server — like increasing its CPU, RAM, 
+or storage — to improve performance.
+
+How it works:
+--------------
+-> You keep the same server but make it more powerful.
+-> Your application continues running on this one machine.
+
+Pros:
+------
+-> Easier to implement.
+-> No major code changes needed.
+-> Data consistency is easier to maintain (everything is in one place).
+-> Low latency because of inter-process communication.
+
+Cons:
+------
+-> Hardware has limits (there’s only so much RAM or CPU you can add).
+-> If the server crashes, your entire system goes down (Single Point of Failure).
+-> High-end hardware is expensive.
+-> Chances of single point of failure.
+
+
+# Horizontal Scaling (Scaling Out)
+====================================
+Adding more servers or machines to your system to handle increased load.
+
+How it works:
+--------------
+-> Your app runs on multiple servers.
+-> A load balancer distributes traffic among them.
+-> Often used with microservices, NoSQL databases, or cloud-native apps.
+-> Every server know about each other via some communication protocol.
+
+Pros:
+------
+-> Theoretically unlimited scaling — just add more machines.
+-> Higher availability and fault tolerance.
+-> Cheaper machines can be used.
+-> Scales well as user increases.
+
+Cons:
+------
+-> More complex to manage (load balancing, distributed data, etc.).
+-> Code might need to handle distributed logic (e.g., shared sessions).
+-> Harder to maintain data consistency across multiple nodes.
+-> High latency because of inter-server communication.

@@ -1,0 +1,49 @@
+=========================================
+# WebRTC (Web Real-Time Communication) :
+=========================================
+Peer-to-peer: Enables direct browser-to-browser communication—ideal for audio, video, or file sharing 
+Transports: Primarily uses UDP (for low latency), though TCP fallback is possible. UDP is “best-effort” (loses some packets but fast) 
+Media-optimized: Built-in features for audio/video, codecs, echo cancellation, adaptive bitrate, etc.
+
+WebRTC does not need any middle server for communication unlike WebSocket.
+In WebRTC, there is no client-server concept like WebSocket. It is peer-to-peer communication.
+
+
+# How WebRTC works:
+------------------===
+Initially, WebSocket is used for signaling/handshake purpose. And then peer-to-peer
+connection is established.
+
+Signaling in WebRTC is the pre-connection negotiation layer—it’s how peers exchange 
+the information needed to connect. Tools like WebSocket serve this role, but ultimately, 
+the actual media and data flow peer-to-peer, not through the signaling server.
+
+1. WebSocket (Signaling)
+-------------------------
+Establishes a persistent, client–server connection.
+
+Typically used to exchange signaling messages (SDP offers/answers, ICE candidates).
+
+This handshake is essential for setting up a WebRTC connection—but no media flows through 
+WebSocket itself.
+
+2. WebRTC Peer Connection
+---------------------------
+After signaling, browsers use RTCPeerConnection to establish a direct peer-to-peer channel.
+
+Media (audio, video, data) flows directly between peers, often via UDP, using STUN/TURN for NAT traversal. 
+
+The signaling server steps aside once the connection is established—media never flows through it.
+
+Flow Summary:
+--------------
+-> Client A and Client B connect to a signaling server (usually via WebSocket).
+-> They exchange SDP offers/answers and ICE candidates via this channel.
+-> Once enough information is shared, they establish a WebRTC peer-to-peer connection.
+-> Real-time media/data flows directly, without the signaling server in the path.
+
+
+Conclusion:
+------------
+Signaling uses WebSocket (or HTTP) to negotiate connection setup.
+WebRTC handles the actual data exchange, directly between peers—WebSocket is only the matchmaker.
