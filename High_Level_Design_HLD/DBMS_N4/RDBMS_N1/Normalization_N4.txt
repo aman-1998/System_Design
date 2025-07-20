@@ -1,0 +1,19 @@
+==================
+# Normalization :
+==================
+Concepts to learn :
+1. Why do we need normalization ?
+2. Insert anomallies, Update animallies and Delete anomallies
+3. Functional Dependency and it'e meaning
+4. Type of Functional dependency (Trivial, No-trivial, Semi-trivial)
+5. Find cadidate key in a FD set.
+6. Find if two FD sets are equivalent.
+7. Find minimal cover of a FD set.
+8. Lossless decomposition
+9. FD preserving
+10. 1NF
+11. 2NF
+12. 3NF
+13. BCNF
+
+Refern RBR videos for all the above concept.

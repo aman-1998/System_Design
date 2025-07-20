@@ -1,3 +1,26 @@
 # Denormalization :
 ====================
 
+Why do need Normalization ?
+-----------------------------
+1. We do normalization to avoid or reduce storing redundant data in table. So, this
+   saves storage space.
+2. To avoid 'insert' anomllies (To learn about this see RBR video)
+3. To avoid 'update' anomallies (To learn about this see RBR video)
+4. To avoid 'delete' anomallies (To learn about this see RBR video)
+
+
+The main goal of Normalization is to reduce storage space. However, nowadays we have
+enough storage space. We need fast and highly responsive applications.
+
+Because of Normalization, we may have to join multiple tables to get the required
+result. But joining is expensive and time taking.
+
+Denormalization refers to even if a table have redundant data, we will not normalize
+the table as we want queries to be executed fast.
+
+Now, in real life, when a database is designed the architect take careful decision 
+whether to normalize or denormalize the table. The entire database modeling is a
+combination of normalized and denormalized tables.
+
+Reference: https://www.youtube.com/watch?v=W_5vn8TBLys

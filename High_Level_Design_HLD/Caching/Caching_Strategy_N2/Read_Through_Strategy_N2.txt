@@ -9,7 +9,7 @@
 # Pros:
 --------
 -> Good approach for heavy read applications
--> Logic of fetching data from DB and updating cache s separated from DB.
+-> Logic of fetching data from DB and updating cache is separated from App server.
 
 # Cons :
 ---------

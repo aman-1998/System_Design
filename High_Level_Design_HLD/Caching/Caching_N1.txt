@@ -48,3 +48,5 @@ future requests should still have the high probablity of cache-hit.
 5. Last In First Out (LIFO)
 6. Random Removal (RR)
 7. Time To Leave (TTL)
+
+Redis supports: LRU, LFU, TTL

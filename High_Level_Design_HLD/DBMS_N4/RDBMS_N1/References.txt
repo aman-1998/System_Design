@@ -1,5 +1,5 @@
 ===============
-# Indexing :
+# References :
 ===============
 1. RBR videos (All)
 
@@ -13,4 +13,9 @@ Channel name: Jenny's Lectures CS IT
 --------------------------------------
 B-Tree & B+ Tree Insertion and Deletion best videos
 Link: https://www.youtube.com/playlist?list=PLybLdgM0k__u3P0tgvCuofLxUjIGCaWqr
+
+
+Normalization vs Denormalization
+---------------------------------
+Reference: https://www.youtube.com/watch?v=W_5vn8TBLys
 
