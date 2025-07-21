@@ -5,10 +5,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
-public class UrlShortnerApp {
+public class StackoverflowApp {
 
 	public static void main(String[] args) {
-		SpringApplication.run(UrlShortnerApp.class, args);
+		SpringApplication.run(StackoverflowApp.class, args);
 	}
 
 }
