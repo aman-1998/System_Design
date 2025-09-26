@@ -11,6 +11,9 @@ import personal.learning.parking.ParkingFloor;
 import personal.learning.parking.ParkingLot;
 import personal.learning.parking.Truck;
 import personal.learning.parking.Vehicle;
+import personal.learning.parking.payment.Card;
+import personal.learning.parking.payment.CardPaymentStrategy;
+import personal.learning.parking.payment.PaymentStrategy;
 import personal.learning.parking.payment.PaymentType;
 
 @Component
@@ -61,7 +64,9 @@ public class MainClient {
 		
 		System.out.println("===========================================================================");
 		
-		parkingLot.unparkVehicle(parkingTicket6, PaymentType.CARD);
+		Card card = new Card("255252441223", 455, "24/31");
+		PaymentStrategy cardPaymentStrategy = new CardPaymentStrategy(card);
+		parkingLot.unparkVehicle(parkingTicket6, cardPaymentStrategy);
 		
 		System.out.println("===========================================================================");
 		

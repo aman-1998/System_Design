@@ -10,6 +10,10 @@ import org.springframework.context.annotation.Bean;
 
 import personal.learning.parking.ParkingFloor;
 import personal.learning.parking.ParkingLot;
+import personal.learning.parking.rate.FlateRateStrategy;
+import personal.learning.parking.rate.RateStrategy;
+import personal.learning.parking.rate.SpotBasedRateStrategy;
+import personal.learning.parking.rate.VehicleBasedRateStrategy;
 
 @SpringBootApplication
 public class ParkingApp {
@@ -21,8 +25,13 @@ public class ParkingApp {
     
     @Bean
     public ParkingLot parkingLot() {
+    	
+    	RateStrategy flateRateStrategy = new FlateRateStrategy(50.0);
+    	RateStrategy vehicleBasedRateStrategy = new VehicleBasedRateStrategy();
+    	RateStrategy spotBasedRateStrategy = new SpotBasedRateStrategy();
+    	
     	int floorNumber = 3;
-    	ParkingLot parkingLot = new ParkingLot(floorNumber);
+    	ParkingLot parkingLot = new ParkingLot(spotBasedRateStrategy, floorNumber);
     	List<ParkingFloor> parkingFloorList = new ArrayList<>();
     	
     	ParkingFloor parkingFloor0 = new ParkingFloor(0, 2, 2, 2);

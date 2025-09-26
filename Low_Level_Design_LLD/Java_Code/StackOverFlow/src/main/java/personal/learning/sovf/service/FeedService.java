@@ -1,11 +1,14 @@
 package personal.learning.sovf.service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import personal.learning.sovf.decorator.MultipleFeedFilter;
 import personal.learning.sovf.entity.Question;
 import personal.learning.sovf.entity.Tag;
 import personal.learning.sovf.enums.QuestionStatus;
+import personal.learning.sovf.strategy.FeedFilterStrategy;
 import personal.learning.sovf.strategy.QuestionStatusBasedFilterStrategy;
 import personal.learning.sovf.strategy.TagBasedFilterStrategy;
 
@@ -78,5 +81,34 @@ public class FeedService {
 			});	 
 		
 		System.out.println("---- Feed ended ----");
+	}
+	
+	public void showFeedByMultipleFilters(List<String> tagNames, QuestionStatus questionStatus) {
+		
+		List<Tag> tags = tagNames.stream().map(name -> TagService.getOrCreateTopic(name))
+				   .collect(Collectors.toList());
+
+		TagBasedFilterStrategy tagBasedFilterStrategy = new TagBasedFilterStrategy(tags);
+		QuestionStatusBasedFilterStrategy questionStatusBasedFilterStrategy = new QuestionStatusBasedFilterStrategy(questionStatus);
+		
+		List<FeedFilterStrategy> feedFilterStrategies = Arrays.asList(tagBasedFilterStrategy, questionStatusBasedFilterStrategy);
+		
+		MultipleFeedFilter multipleFeedFilter = new MultipleFeedFilter(feedFilterStrategies);
+		
+		List<Question> allQuestions = Database.questions.entrySet().stream()
+					.map(entry -> entry.getValue()).collect(Collectors.toList());
+		
+		List<Question> result = multipleFeedFilter.filter(allQuestions);
+		
+		result.stream().forEach(question -> {
+			   System.out.println("Question : " + question.getText());
+			   System.out.println("Upvotes: " + question.getNoOfUpVotes());
+			   System.out.println("Upvotes: " + question.getNoOfDownVotes());
+			   System.out.println("Posted by: " + question.getAuthor());
+			   System.out.println("Posted by: " + question.getAuthor());
+			   System.out.println("Question Status: " + question.getQuestionStatus().name());
+			   System.out.print("Tags: " );
+			   question.getAssociatedTags().stream().forEach(tag -> System.out.print(tag + " "));
+			});	
 	}
 }

@@ -11,7 +11,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import personal.learning.parking.payment.PaymentService;
-import personal.learning.parking.payment.PaymentType;
+import personal.learning.parking.payment.PaymentStrategy;
+import personal.learning.parking.rate.RateStrategy;
 
 public class ParkingLot {
 	
@@ -28,11 +29,14 @@ public class ParkingLot {
 	
 	private Map<String, ParkingTicket> activeTickets = new HashMap<>();
 	
+	private RateStrategy rateStrategy;
 	
-	public ParkingLot(int availableBikeSpots, 
-			           int availableCarSpots, 
-			           int availableTruckSpots) {
+	public ParkingLot(RateStrategy rateStrategy, 
+					  int availableBikeSpots, 
+			          int availableCarSpots, 
+			          int availableTruckSpots) {
 		
+		this.rateStrategy = rateStrategy;
 		this.availableBikeSpots = availableBikeSpots;
 		this.availableCarSpots = availableCarSpots;
 		this.availableTruckSpots = availableTruckSpots;
@@ -147,7 +151,7 @@ public class ParkingLot {
 	}
 	
 	//Unpark
-	public void unparkVehicle(String parkingTicketId, PaymentType paymentType) {
+	public void unparkVehicle(String parkingTicketId, PaymentStrategy paymentStrategy) {
 		
 		ParkingTicket parkingTicket = activeTickets.get(parkingTicketId);
 		
@@ -167,7 +171,7 @@ public class ParkingLot {
 				System.out.println("Vehicle[" + vehicle.getVehicleNumber() + "] of type " 
 				           + vehicle.getVehicleType() + " is unparked successfully from a Truck spot");
 				
-				paymentService.payment(parkingSpot, paymentType);
+				paymentService.payment(parkingTicket, rateStrategy, paymentStrategy);
 				
 			} else {
 				System.out.println("Vehicle[" + vehicle.getVehicleNumber() + "] of type " 
@@ -180,7 +184,7 @@ public class ParkingLot {
 				System.out.println("Vehicle[" + vehicle.getVehicleNumber() + "] of type " 
 				           + vehicle.getVehicleType() + " is unparked successfully from a Car spot");
 				
-				paymentService.payment(parkingSpot, paymentType);
+				paymentService.payment(parkingTicket, rateStrategy, paymentStrategy);
 				
 			} else {
 				System.out.println("Vehicle[" + vehicle.getVehicleNumber() + "] of type " 
@@ -193,7 +197,7 @@ public class ParkingLot {
 				System.out.println("Vehicle[" + vehicle.getVehicleNumber() + "] of type " 
 				           + vehicle.getVehicleType() + " is unparked successfully from a Bike spot");
 				
-				paymentService.payment(parkingSpot, paymentType);
+				paymentService.payment(parkingTicket, rateStrategy, paymentStrategy);
 				
 			} else {
 				System.out.println("Vehicle[" + vehicle.getVehicleNumber() + "] of type " 

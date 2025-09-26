@@ -4,14 +4,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 
-// Video Link: https://www.youtube.com/watch?v=L4ocSo6QBtI
-// Video Link: https://www.youtube.com/watch?v=0x0TfU0XvWc
-
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
-public class StackoverflowApp {
+public class LibraryManagementApp {
 
 	public static void main(String[] args) {
-		SpringApplication.run(StackoverflowApp.class, args);
+		SpringApplication.run(LibraryManagementApp.class, args);
 	}
 
 }
